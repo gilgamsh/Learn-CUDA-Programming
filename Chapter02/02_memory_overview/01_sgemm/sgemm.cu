@@ -14,7 +14,7 @@
 //! @param A          matrix A as provided to device
 //! @param B          matrix B as provided to device
 //! @param C          matrix C as provided to device
-//! @param N          height of matrix A and matrix C
+//! @param N          height of matrix A and matrix C  A:N*K, B:K*M, C:N*M
 //! @param M          width of matrix B and matrix C
 //! @param K          width of matrix A and height of matrix C
 //! @param alpha      scala value for matrix multiplication
@@ -24,7 +24,7 @@ __global__ void
 sgemm_gpu_kernel(const float *A, const float *B, float *C, int N, int M, int K, float alpha, float beta)
 {
 	int col = blockIdx.x * blockDim.x + threadIdx.x;
-	int row = blockIdx.y * blockDim.y + threadIdx.y;
+	int row = blockIdx.y * blockDim.y + threadIdx.y; 
 
 	float sum = 0.f;
 	for (int i = 0; i < K; ++i) {
@@ -109,8 +109,8 @@ int main()
 
 	// copy initial value for gpu memory
 	cudaMemcpy(d_A, A, N * K * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpy(d_B, A, K * M * sizeof(float), cudaMemcpyHostToDevice);
-	cudaMemcpy(d_C, A, N * M * sizeof(float), cudaMemcpyHostToDevice);
+	cudaMemcpy(d_B, B, K * M * sizeof(float), cudaMemcpyHostToDevice);
+	cudaMemcpy(d_C, C, N * M * sizeof(float), cudaMemcpyHostToDevice);
 
 	// do operation
 	//sgemm_gpu(d_A, d_B, d_C, N, M, K, alpha, beta);
