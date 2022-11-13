@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-#define N 512
+#define N 16
 
 void host_add(int *a, int *b, int *c) {
 	for(int idx=0;idx<N;idx++)
